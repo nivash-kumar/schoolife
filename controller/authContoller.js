@@ -97,10 +97,12 @@ exports.postLogin = async (req, res, next) => {
         res.render("./wrongResult", {
           pageTitle: "Login faild!",
           isLoggedin: false,
-          message: "User not found",
+          error:"User not found",
+          oldInput: {email},
         });
       } else {
-        if (user.password === password && user.userType === userType) {
+        const isMatch = await (bcrypt.compare(hashedPassword, password) && (user.userType === userType));
+        if (isMatch) {
           console.log("User logined successfully");
           // const token = jwt.sign({)
           res.cookie("isLoggedin", true);
