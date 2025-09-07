@@ -11,7 +11,7 @@ exports.getsignup = (req, res, next) => {
     res.render("../views/auth/signup", {
       pageTitle: "Register Your self.",
       isLoggedin: false,
-      oldInput: {},
+      oldInput: {name:"", email:"", userType:""},
       error: [],
     });
   } else {
@@ -25,6 +25,8 @@ exports.getLogin = (req, res, next) => {
     res.render("../views/auth/login", {
       pageTitle: "Login Here!",
       isLoggedin: false,
+      error: [],
+      oldInput:{email:""}
     });
   } else {
     res.redirect("/");
@@ -81,7 +83,7 @@ exports.postsignup = [
       .catch((err) => {
         return res.status(402).render("/auth/signup", {
           pageTitle: "register Here",
-          err: [err.msg],
+          error: [err.msg],
           oldInput: { name, email, userType },
         });
       });
@@ -121,3 +123,12 @@ exports.postLogin = async (req, res, next) => {
       res.redirect("/login");
     });
 };
+
+exports.postLogout = async(req, res, next) =>{
+  console.log("logout called",req.body);
+  req.session.isLoggedin = false;
+  req.session.distroy((err) =>{
+    console.log("Error when logout!",err);
+  });
+  redirect("/login");
+}
