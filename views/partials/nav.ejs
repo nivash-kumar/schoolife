@@ -1,7 +1,4 @@
-
-
-
-<nav class=" bg-gradient-to-r from-fuchsia-800 via-pink-600 to-fuchsia-700 text-white shadow-lg sticky top-0 z-50">
+<nav class="max-w-full bg-gradient-to-r from-fuchsia-800 via-pink-600 to-fuchsia-700 text-white shadow-lg sticky top-0 z-50 overflow-hidden">
   <div class="max-w-5xl mx-auto flex flex-wrap items-center justify-between px-4 py-3 md:flex-nowrap">
     <a href="/" class="flex items-center text-2xl font-black tracking-tight gap-2">
       <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -22,16 +19,15 @@
     </button>
 
     <div id="menu" class="hidden w-full md:flex md:w-auto md:items-center md:gap-6 mt-3 md:mt-0">
-      <ul class="flex flex-col md:flex-row md:items-center md:space-x-6 text-lg font-semibold">
+      <ul class="flex flex-col md:flex-row md:items-center md:space-x-6 text-lg font-semibold flex-1">
         <li><a href="/" class="block py-2 px-3 hover:text-yellow-300 transition">Home</a></li>
         <li><a href="/students" class="block py-2 px-3 hover:text-yellow-300 transition">Students</a></li>
         <li><a href="/teachers" class="block py-2 px-3 hover:text-yellow-300 transition">Teachers</a></li>
         <li><a href="/subjects" class="block py-2 px-3 hover:text-yellow-300 transition">Subjects</a></li>
 
         <% if (typeof user !== 'undefined' && user) { %>
-          <li class="block py-2 px-3 text-fuchsia-200 md:text-base font-normal">Hi, <%= user.name.split(' ')[0] %>!</li>
-          <li><a href="/profile" class="block py-2 px-3 hover:text-yellow-300 transition">Profile</a></li>
-          <li>
+          <li class="block py-2 px-3 text-fuchsia-200 md:text-base font-normal flex-2"><a href="/profile" class="hover:text-yellow-300 transition">Hi, <%= user.name.split(' ')[0] %>!</a></li>
+          <li class="flex-2">
             <a href="/logout" class="bg-white text-fuchsia-700 hover:bg-yellow-300 px-4 py-1 rounded-full shadow transition inline-block">
               Logout
             </a>

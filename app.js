@@ -7,7 +7,7 @@ const { default: mongoose } = require("mongoose");
 
 //Internal modules...   
 const rootDir = require("./utils/pathUtil");
-const studentAuthRouter = require("./router/auth/studentAuthRouter");
+const authRouter = require("./router/authRouter");
 // const teacherRouter = require("./router/teacherRouter");
 const storeRouter = require("./router/storeRouter");
 const errorController = require("./controller/errorController");
@@ -21,12 +21,20 @@ app.use(express.urlencoded());
 app.use(express.static(path.join(rootDir, "public")));
 
 app.use((req, res, next) => {
+console.log("cookie check middleware", req.get("cookie"));
+  req.isLoggedIn = req.get("cookie")
+    ? req.get("cookie").split("=")[1] === "true"
+    : false;
+  next();
+});
+
+app.use((req, res, next) => {
   console.log(req.url, req.method);
   next();
 });
 
 //// Uses our routers
-app.use(studentAuthRouter);
+app.use(authRouter);
 app.use(storeRouter);
 // app.use(teacherRouter);
 app.use(errorController.pageNotFound);

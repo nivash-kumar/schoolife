@@ -1,0 +1,89 @@
+<%- include("../partials/head") %>
+
+  <body class="bg-gradient-to-br from-pink-200 via-white to-fuchsia-100 min-h-screen">
+    <main class="flex justify-center items-center min-h-[75vh] px-2 py-10">
+      <form action="/signup" method="POST"
+        class="w-full max-w-md bg-white/80 p-10 rounded-3xl shadow-2xl backdrop-blur-md mt-10 border-t-8 border-fuchsia-400">
+        <h1 class="text-4xl font-extrabold text-fuchsia-700 text-center drop-shadow-md mb-8 tracking-tighter">Create
+          your account</h1>
+        <%- include("../partials/error")  %>
+            <div class="mb-5 flex flex-col gap-3">
+              <label for="name" class="font-semibold text-gray-700 text-sm">Full Name</label>
+              <div
+                class="flex items-center border-2 border-fuchsia-400 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-fuchsia-400 bg-white">
+                <svg class="w-5 h-5 text-fuchsia-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path d="M5.121 17.804A10 10 0 1 1 12 22a10 10 0 0 1-6.879-4.196Z" stroke-width="2" />
+                  <circle cx="12" cy="10" r="3" stroke-width="2" />
+                </svg>
+                <input type="text" name="name" id="name" required maxlength="50"
+                  class="flex-1 outline-none bg-transparent px-2" placeholder="Full Name"
+                  value="<%= oldInput.name ? oldInput.name : "" %>" />
+              </div>
+            </div>
+            <div class="mb-5 flex flex-col gap-3">
+              <label for="email" class="font-semibold text-gray-700 text-sm">Email</label>
+              <div
+                class="flex items-center border-2 border-fuchsia-400 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-fuchsia-400 bg-white">
+                <svg class="w-5 h-5 text-fuchsia-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path d="M3 8l9 6 9-6M5 19h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2Z"
+                    stroke-width="2" />
+                </svg>
+                <input type="email" name="email" id="email" required class="flex-1 outline-none bg-transparent px-2"
+                  placeholder="email@school.com" value="<%= oldInput.email ? oldInput.email : "" %>" />
+              </div>
+            </div>
+
+            <div class="mb-5 flex flex-col gap-3">
+              <p class="font-semibold text-gray-700 text-sm">Choose who are you.</p>
+              <div class=" grid grid-cols-3 gap-3">
+                <div class="flex items-center space-x-2">
+                  <input class="peer hidden" type="radio" name="userType" id="student" value="student" checked = "<%= (oldInput.userType === 'student') ? 'checked' : '' %>">
+                  <label for="student"
+                    class="flex items-center p-3 border-2 border-fuchsia-400 rounded-xl cursor-pointer px-4 py-2 peer-checked:bg-fuchsia-400 transition-all duration-200 font-semibold text-gray-700 text-sm bg-white">
+                    Student
+                  </label>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <input class="peer hidden" type="radio" name="userType" id="teacher" value="teacher" checked = "<%= (oldInput.userType === 'teacher') ? 'checked' : '' %>">
+                  <label for="teacher"
+                    class="flex items-center p-3 border-2 border-fuchsia-400 rounded-xl cursor-pointer px-4 py-2 peer-checked:bg-fuchsia-400 transition-all duration-200 font-semibold text-gray-700 text-sm bg-white">
+                    Teacher
+                  </label>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <input class="peer hidden" type="radio" name="userType" id="admin" value="admin"
+                   <%= (oldInput.userType === 'admin') ? 'checked' : '' %>>
+                  <label for="admin"
+                    class="flex items-center p-3 border-2 border-fuchsia-400 rounded-xl cursor-pointer px-4 py-2 peer-checked:bg-fuchsia-400 transition-all duration-200 font-semibold text-gray-700 text-sm bg-white">
+                    Admin
+                  </label>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="mb-8 flex flex-col gap-3">
+              <label for="password" class="font-semibold text-gray-700 text-sm">Password</label>
+              <div
+                class="flex items-center border-2 border-fuchsia-400 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-fuchsia-400 bg-white">
+                <svg class="w-5 h-5 text-fuchsia-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <rect x="4" y="11" width="16" height="9" rx="2" stroke-width="2" />
+                  <path d="M8 11V7a4 4 0 1 1 8 0v4" stroke-width="2" />
+                </svg>
+                <input type="password" name="password" id="password" required minlength="6"
+                  class="flex-1 outline-none bg-transparent px-2" placeholder="●●●●●●●●" />
+              </div>
+            </div>
+            <button type="submit"
+              class="w-full bg-gradient-to-r from-pink-500 to-fuchsia-600 hover:from-fuchsia-600 hover:to-pink-700 text-white font-bold py-3 rounded-lg text-lg shadow-lg transition focus:ring-4 focus:ring-pink-200">
+              Sign Up
+            </button>
+            <p class="mt-8 text-sm text-center text-gray-700">
+              Already have an account?
+              <a href="/login" class="text-fuchsia-700 font-semibold hover:underline">Log In</a>
+            </p>
+      </form>
+    </main>
+  </body>
+
+  </html>

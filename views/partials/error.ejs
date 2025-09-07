@@ -1,0 +1,9 @@
+<% if (typeof error !=='undefined' && error.length> 0) { %>
+    <div
+        class="mb-6 flex items-center bg-yellow-100 border-l-4 border-yellow-400 text-yellow-900 px-4 py-3 rounded shadow animate-pulse">
+        <span class="mr-2">⚠️</span>
+        <span>
+            <%= error %>
+        </span>
+    </div>
+<% } %>
