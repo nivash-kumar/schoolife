@@ -13,12 +13,17 @@
   "type": "commonjs",
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "tailwindcss": "^4.1.12",
+    "@tailwindcss/cli": "^4.1.11",
+    "autoprefixer": "^10.4.21",
     "bcryptjs": "^3.0.2",
+    "connect-mongodb-session": "^5.0.0",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
+    "express-session": "^1.18.2",
     "express-validator": "^7.2.1",
-    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.0",
-    "tailwindcss": "^4.1.12"
+    "postcss": "^8.5.6"
   }
 }

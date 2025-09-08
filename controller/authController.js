@@ -5,14 +5,15 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/userModule");
 
 exports.getsignup = (req, res, next) => {
-  const isLoggedin = req.isLoggedin;
-  console.log("isLoggedin", isLoggedin);
-  if (!isLoggedin) {
+  const isLoggedIn = req.isLoggedIn;
+  console.log("isLoggedIn", isLoggedIn);
+  if (!isLoggedIn) {
     res.render("../views/auth/signup", {
       pageTitle: "Register Your self.",
-      isLoggedin: false,
-      oldInput: {name:"", email:"", userType:""},
+      isLoggedIn: false,
+      oldInput: { name: "", email: "", userType: "" },
       error: [],
+      user: {},
     });
   } else {
     res.redirect("/");
@@ -20,13 +21,14 @@ exports.getsignup = (req, res, next) => {
 };
 
 exports.getLogin = (req, res, next) => {
-  const isLoggedin = req.get("cookie");
-  if (!isLoggedin) {
+  const isLoggedIn = req.get("cookie");
+  if (!isLoggedIn) {
     res.render("../views/auth/login", {
       pageTitle: "Login Here!",
-      isLoggedin: false,
+      isLoggedIn: false,
       error: [],
-      oldInput:{email:""}
+      oldInput: { email: "", password: "" },
+      user: {},
     });
   } else {
     res.redirect("/");
@@ -61,9 +63,10 @@ exports.postsignup = [
     if (!error.isEmpty()) {
       return res.status(422).render("auth/signup", {
         pageTitle: "Register Here",
-        isLoggedin: false,
+        isLoggedIn: false,
         error: error.array().map((err) => err.msg),
         oldInput: { name, email, userType },
+        user: {},
       });
     }
     bcrypt
@@ -73,9 +76,18 @@ exports.postsignup = [
           name,
           email,
           userType,
+          dublicatePassword: password,
           password: hashedPassword,
         });
-        user.save();
+        user.save().catch((err) => {
+          return res.status(402).render("/auth/signup", {
+            pageTitle: "register Here",
+            error: [err.msg],
+            oldInput: { name, email, userType },
+            isLoggedIn: false,
+            user: {},
+          });
+        });
       })
       .then(() => {
         res.redirect("/login");
@@ -85,6 +97,8 @@ exports.postsignup = [
           pageTitle: "register Here",
           error: [err.msg],
           oldInput: { name, email, userType },
+          isLoggedIn: false,
+          user: {},
         });
       });
   },
@@ -93,42 +107,43 @@ exports.postsignup = [
 exports.postLogin = async (req, res, next) => {
   console.log("post users data ", req.body);
   const { email, userType, password } = req.body;
-  User.findOne({ email })
-    .then((user) => {
-      if (!user) {
-        res.render("./wrongResult", {
-          pageTitle: "Login faild!",
-          isLoggedin: false,
-          error:"User not found",
-          oldInput: {email},
-        });
-      } else {
-        const isMatch = await (bcrypt.compare(hashedPassword, password) && (user.userType === userType));
-        if (isMatch) {
-          console.log("User logined successfully");
-          // const token = jwt.sign({)
-          res.cookie("isLoggedin", true);
-          res.redirect("/");
-        } else {
-          res.render("./wrongResult", {
-            pageTitle: "Login faild!",
-            isLoggedin: false,
-            message: "Incorrect password or UserType",
-          });
-        }
-      }
-    })
-    .catch((err) => {
-      console.log("Error while Login", err);
-      res.redirect("/login");
+  const user = await User.findOne({ email });
+  if (!user) {
+    // console.log("user not found");
+    return res.status(422).render("auth/login", {
+      pageTitle: "Login faild!",
+      isLoggedIn: false,
+      error: ["User not found"],
+      oldInput: { email: email},
+      user: {},
     });
+  }
+  const isPassMatch = await (bcrypt.compare(password, user.password));
+  const isUserMatch = (userType === user.userType);
+  if (!isPassMatch && !isUserMatch) {
+    console.log("user data not matched found!", user);
+    return res.status(422).render("auth/login", {
+      pageTitle: "Login faild!",
+      isLoggedIn: false,
+      error: ["Incorrect password or UserType"],
+      oldInput: { email, userType},
+      user: {},
+    });
+  }
+  console.log("user data found!", user);
+  req.session.isLoggedIn = true;
+  req.session.user = user;
+  await req.session.save();
+  res.redirect("/");
 };
 
-exports.postLogout = async(req, res, next) =>{
-  console.log("logout called",req.body);
-  req.session.isLoggedin = false;
-  req.session.distroy((err) =>{
-    console.log("Error when logout!",err);
+exports.postLogout = async (req, res, next) => {
+  console.log("logout called", req.body);
+  req.session.isLoggedIn = false;
+  req.session.destroy((err) => {
+    if (err) {
+      console.log("Error destroying session:", err);
+    }
+  res.redirect("/login");
   });
-  redirect("/login");
-}
+};

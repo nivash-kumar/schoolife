@@ -37,7 +37,7 @@
               <p class="font-semibold text-gray-700 text-sm">Choose who are you.</p>
               <div class=" grid grid-cols-3 gap-3">
                 <div class="flex items-center space-x-2">
-                  <input class="peer hidden" type="radio" name="userType" id="student" value="student" checked = "<%= (oldInput.userType === 'student') ? 'checked' : '' %>">
+                  <input class="peer hidden" type="radio" name="userType" id="student" value="student" checked = "<%= (oldInput.userType === 'student') || (oldInput.userType === '') %>">
                   <label for="student"
                     class="flex items-center p-3 border-2 border-fuchsia-400 rounded-xl cursor-pointer px-4 py-2 peer-checked:bg-fuchsia-400 transition-all duration-200 font-semibold text-gray-700 text-sm bg-white">
                     Student
@@ -51,8 +51,7 @@
                   </label>
                 </div>
                 <div class="flex items-center space-x-2">
-                  <input class="peer hidden" type="radio" name="userType" id="admin" value="admin"
-                   <%= (oldInput.userType === 'admin') ? 'checked' : '' %>>
+                  <input class="peer hidden" type="radio" name="userType" id="admin" value="admin" checked ="<%= (oldInput.userType === 'admin') ? 'checked' : '' %>">
                   <label for="admin"
                     class="flex items-center p-3 border-2 border-fuchsia-400 rounded-xl cursor-pointer px-4 py-2 peer-checked:bg-fuchsia-400 transition-all duration-200 font-semibold text-gray-700 text-sm bg-white">
                     Admin

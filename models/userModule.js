@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  dublicatePassword: {type: String,}
 });
 
 const User = mongoose.model("User", userSchema);

@@ -25,12 +25,12 @@
         <li><a href="/teachers" class="block py-2 px-3 hover:text-yellow-300 transition">Teachers</a></li>
         <li><a href="/subjects" class="block py-2 px-3 hover:text-yellow-300 transition">Subjects</a></li>
 
-        <% if (typeof user !== 'undefined' && user) { %>
+        <% if(isLoggedIn) { %>
           <li class="block py-2 px-3 text-fuchsia-200 md:text-base font-normal flex-2"><a href="/profile" class="hover:text-yellow-300 transition">Hi, <%= user.name.split(' ')[0] %>!</a></li>
           <li class="flex-2">
-            <a href="/logout" class="bg-white text-fuchsia-700 hover:bg-yellow-300 px-4 py-1 rounded-full shadow transition inline-block">
-              Logout
-            </a>
+            <form action="/logout" method="post">
+              <button class=""bg-white text-fuchsia-700 hover:bg-yellow-300 px-4 py-1 rounded-full shadow transition inline-block">Logout</button>
+            </form>
           </li>
         <% } else { %>
           <li><a href="/login" class="block py-2 px-3 hover:text-yellow-300 transition">Login</a></li>

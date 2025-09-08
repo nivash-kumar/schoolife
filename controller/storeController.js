@@ -1,19 +1,28 @@
 
 exports.index = (req, res, next) => {
-    console.log(req.isLoggedin);
+    req.user = req.session.user;
+    console.log("The isLoggedIn is ::::::",req.isLoggedIn);
     res.render('landing', {
         pageTitle: 'Landing Page',
-        isLoggedin: req.isLoggedin,
-        user:{
-            name : "Singh KN",
-        }
+        isLoggedIn: req.isLoggedIn,
+        error: [],
+      user:{name: "nivash"},
     });
 };
 exports.dev = (req, res, next) => {
     console.log("Any one clicked development page");
-    console.log(req.isLoggedin);
+    console.log(req.isLoggedIn);
     res.render('dev', {
         pageTitle: 'development',
-        isLoggedin: req.isLoggedin,
+        isLoggedIn: req.isLoggedIn,
     });
 };
+
+
+// res.render("../views/auth/signup", {
+//       pageTitle: "Register Your self.",
+//       isLoggedIn: false,
+//       oldInput: { name: "", email: "", userType: "" },
+//       error: [],
+//       user: {},
+//     });
