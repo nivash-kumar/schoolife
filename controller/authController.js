@@ -135,8 +135,6 @@ exports.postLogin = async (req, res, next) => {
 
 exports.postLogout = async (req, res, next) => {
   req.session.isLoggedIn = false;
-  console.log("res.session before destroy>>>>>>>>>>>>>", req.session);
-  // req.session.destroy()
   req.session.destroy((err) => {
     if (err) {
       console.log("Error destroying session:", err);
