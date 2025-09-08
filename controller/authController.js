@@ -6,7 +6,6 @@ const User = require("../models/userModule");
 
 exports.getsignup = (req, res, next) => {
   const isLoggedIn = req.isLoggedIn;
-  console.log("isLoggedIn", isLoggedIn);
   if (!isLoggedIn) {
     res.render("../views/auth/signup", {
       pageTitle: "Register Your self.",
@@ -21,7 +20,7 @@ exports.getsignup = (req, res, next) => {
 };
 
 exports.getLogin = (req, res, next) => {
-  const isLoggedIn = req.get("cookie");
+  const isLoggedIn = req.isLoggedIn;
   if (!isLoggedIn) {
     res.render("../views/auth/login", {
       pageTitle: "Login Here!",
@@ -31,6 +30,7 @@ exports.getLogin = (req, res, next) => {
       user: {},
     });
   } else {
+    console.log("loggedIn user try to login again!");
     res.redirect("/");
   }
 };
@@ -59,7 +59,6 @@ exports.postsignup = [
   async (req, res, next) => {
     const { name, email, userType, password } = req.body;
     const error = validationResult(req);
-    console.log("Error is the :", error);
     if (!error.isEmpty()) {
       return res.status(422).render("auth/signup", {
         pageTitle: "Register Here",
@@ -109,7 +108,6 @@ exports.postLogin = async (req, res, next) => {
   const { email, userType, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
-    // console.log("user not found");
     return res.status(422).render("auth/login", {
       pageTitle: "Login faild!",
       isLoggedIn: false,
@@ -121,7 +119,6 @@ exports.postLogin = async (req, res, next) => {
   const isPassMatch = await (bcrypt.compare(password, user.password));
   const isUserMatch = (userType === user.userType);
   if (!isPassMatch && !isUserMatch) {
-    console.log("user data not matched found!", user);
     return res.status(422).render("auth/login", {
       pageTitle: "Login faild!",
       isLoggedIn: false,
@@ -130,7 +127,6 @@ exports.postLogin = async (req, res, next) => {
       user: {},
     });
   }
-  console.log("user data found!", user);
   req.session.isLoggedIn = true;
   req.session.user = user;
   await req.session.save();
@@ -138,8 +134,9 @@ exports.postLogin = async (req, res, next) => {
 };
 
 exports.postLogout = async (req, res, next) => {
-  console.log("logout called", req.body);
   req.session.isLoggedIn = false;
+  console.log("res.session before destroy>>>>>>>>>>>>>", req.session);
+  // req.session.destroy()
   req.session.destroy((err) => {
     if (err) {
       console.log("Error destroying session:", err);

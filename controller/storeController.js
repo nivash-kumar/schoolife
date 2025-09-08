@@ -1,7 +1,6 @@
 
 exports.index = (req, res, next) => {
     req.user = req.session.user;
-    console.log("The isLoggedIn is ::::::",req.isLoggedIn);
     res.render('landing', {
         pageTitle: 'Landing Page',
         isLoggedIn: req.isLoggedIn,
@@ -11,7 +10,6 @@ exports.index = (req, res, next) => {
 };
 exports.dev = (req, res, next) => {
     console.log("Any one clicked development page");
-    console.log(req.isLoggedIn);
     res.render('dev', {
         pageTitle: 'development',
         isLoggedIn: req.isLoggedIn,
